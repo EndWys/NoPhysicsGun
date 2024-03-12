@@ -19,6 +19,8 @@ public class PlayerGun : CachedMonoBehaviour
     [SerializeField] float _minRotation;
     [SerializeField] float _maxRotation;
 
+    public Action OnShot;
+
     private Pooling<GunProjectile> _projectiles = new Pooling<GunProjectile>();
 
     private Vector3 _gunFroward => CachedTransform.forward;
@@ -31,6 +33,8 @@ public class PlayerGun : CachedMonoBehaviour
     {
         _projectiles.CreateMoreIfNeeded = true;
         _projectiles.Initialize(_projectail, _projectailParent);
+
+        OnShot += CallShotAnimation;
     }
 
     private void Update()
@@ -75,26 +79,27 @@ public class PlayerGun : CachedMonoBehaviour
         }
     }
 
-    private async void Shoot()
+    private void Shoot()
     {
-        Debug.Log("Shoot");
-
-        _animationInProcess = true;
-
         GunProjectile projectile = _projectiles.Collect(_projectailParent,CachedTransform.position,false);
         projectile.Shoot(_gunFroward, _gunPower);
 
         projectile.OnHit += (GunProjectile p) => { _projectiles.Release(p); };
+
+        OnShot.Invoke();
+    }
+
+    private async void CallShotAnimation()
+    {
+        _animationInProcess = true;
 
         Task cameraShakeCallback = new Task(() => { });
         Task gunShakeCallback = new Task(() => { });
 
         _cameraShake.StartAnimation(cameraShakeCallback);
         _gunImpact.StartAnimation(gunShakeCallback);
-   
-        await Task.WhenAll(new Task[] { cameraShakeCallback, gunShakeCallback });
 
-        Debug.Log("Animation Finished");
+        await Task.WhenAll(new Task[] { cameraShakeCallback, gunShakeCallback });
 
         _animationInProcess = false;
     }
