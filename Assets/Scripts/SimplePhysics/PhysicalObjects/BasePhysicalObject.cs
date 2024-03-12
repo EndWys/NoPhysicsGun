@@ -1,8 +1,11 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 public abstract class BasePhysicalObject : CachedMonoBehaviour
 {
+    public event Action AfterHit;
+
     private bool _isMoving = false;
     private bool _isFalling = false;
 
@@ -24,6 +27,7 @@ public abstract class BasePhysicalObject : CachedMonoBehaviour
         if (CheckForHit())
         {
             Hit();
+            AfterHit?.Invoke();
         }
     }
 

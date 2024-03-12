@@ -16,10 +16,12 @@ public class PlayerGun : CachedMonoBehaviour
 
     [Header("Rotation Settings")]
     [SerializeField] float _rotationSpeed = 30;
+    [Range(-1f,1f)]
     [SerializeField] float _minRotation;
+    [Range(-1f, 1f)]
     [SerializeField] float _maxRotation;
 
-    public Action OnShot;
+    private Action OnShot;
 
     private Pooling<GunProjectile> _projectiles = new Pooling<GunProjectile>();
 
@@ -84,7 +86,7 @@ public class PlayerGun : CachedMonoBehaviour
         GunProjectile projectile = _projectiles.Collect(_projectailParent,CachedTransform.position,false);
         projectile.Shoot(_gunFroward, _gunPower);
 
-        projectile.OnHit += (GunProjectile p) => { _projectiles.Release(p); };
+        projectile.AfterHit += (GunProjectile p) => { _projectiles.Release(p); };
 
         OnShot.Invoke();
     }
