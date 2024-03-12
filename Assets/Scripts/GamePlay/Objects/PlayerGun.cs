@@ -6,6 +6,8 @@ public class PlayerGun : CachedMonoBehaviour
     [SerializeField] GameObject _projectail;
     [SerializeField] Transform _projectailParent;
     [SerializeField] TrajectoryDrawer _trajectoryDrawer;
+    [SerializeField] GunImpact _gunImpact;
+    [SerializeField] CameraShake _cameraShake;
     
     [Space]
     [SerializeField] float _gunPower;
@@ -72,6 +74,9 @@ public class PlayerGun : CachedMonoBehaviour
         GunProjectile projectile = _projectiles.Collect(_projectailParent,CachedTransform.position,false);
         projectile.Shoot(_gunFroward, _gunPower);
         projectile.OnHit += (GunProjectile p) => { _projectiles.Release(p); };
+
+        _cameraShake.OnShoot();
+        _gunImpact.OnShoot();
     }
 
     private void ShowTrajectory()
