@@ -8,8 +8,8 @@ public class PlayerGun : CachedMonoBehaviour
     [SerializeField] GameObject _projectail;
     [SerializeField] Transform _projectailParent;
     [SerializeField] TrajectoryDrawer _trajectoryDrawer;
-    [SerializeField] GunImpact _gunImpact;
-    [SerializeField] CameraShake _cameraShake;
+    [SerializeField] ShakeAnimation _gunImpact;
+    [SerializeField] ShakeAnimation _cameraShake;
     
     [Space]
     [SerializeField] float _gunPower;
@@ -89,8 +89,8 @@ public class PlayerGun : CachedMonoBehaviour
         Task cameraShakeCallback = new Task(() => { });
         Task gunShakeCallback = new Task(() => { });
 
-        _cameraShake.OnShoot(cameraShakeCallback);
-        _gunImpact.OnShoot(gunShakeCallback);
+        _cameraShake.StartAnimation(cameraShakeCallback);
+        _gunImpact.StartAnimation(gunShakeCallback);
    
         await Task.WhenAll(new Task[] { cameraShakeCallback, gunShakeCallback });
 

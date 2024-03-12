@@ -779,7 +779,7 @@ MonoBehaviour:
   _projectailParent: {fileID: 1464933992}
   _trajectoryDrawer: {fileID: 925124786}
   _gunImpact: {fileID: 1222655340}
-  _cameraShake: {fileID: 2026565895}
+  _cameraShake: {fileID: 2026565896}
   _gunPower: 12
   _rotationSpeed: 30
   _minRotation: 0.1
@@ -793,10 +793,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1222655337}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 58431fbf2e31ce8429785fbafdcb2eba, type: 3}
+  m_Script: {fileID: 11500000, guid: 91190a15600456a44a768535aad1abc9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _shakingPart: {fileID: 242278930}
+  _distance: 0.15
+  _direction: {x: 0, y: 0, z: 1}
+  _target: {fileID: 242278930}
   _cameraShakeCurve:
     serializedVersion: 2
     m_Curve:
@@ -1066,7 +1068,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2026565893}
   - component: {fileID: 2026565894}
-  - component: {fileID: 2026565895}
+  - component: {fileID: 2026565896}
   m_Layer: 0
   m_Name: Character
   m_TagString: Untagged
@@ -1107,7 +1109,7 @@ MonoBehaviour:
   _rotationSpeed: 30
   _minRotation: -0.35
   _maxRotation: 0.35
---- !u!114 &2026565895
+--- !u!114 &2026565896
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1116,9 +1118,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 2026565892}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 44ca9669e09e73841a928b233f578665, type: 3}
+  m_Script: {fileID: 11500000, guid: 91190a15600456a44a768535aad1abc9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _distance: 0.1
+  _direction: {x: -1, y: 1, z: 0}
+  _target: {fileID: 963194228}
   _cameraShakeCurve:
     serializedVersion: 2
     m_Curve:
