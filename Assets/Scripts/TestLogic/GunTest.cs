@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class GunTest : MonoBehaviour
 {
-    Transform gunTransfrom;
-    [SerializeField] ProjectailTest projectail;
-    
+    [SerializeField] Projectile projectail;
+    [SerializeField] float _gunPower;
+    private Transform gunTransfrom;
 
     // Start is called before the first frame update
     void Start()
@@ -40,6 +40,6 @@ public class GunTest : MonoBehaviour
     {
         projectail.transform.position = transform.position;
 
-        projectail.Move(gunTransfrom.forward);
+        projectail.Shoot(gunTransfrom.forward, _gunPower);
     }
 }

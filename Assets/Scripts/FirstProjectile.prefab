@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 717405904345304244}
   - component: {fileID: 4951424062949537518}
   - component: {fileID: 4058863606079644131}
-  - component: {fileID: 5010736166011857109}
+  - component: {fileID: 7461686842760293600}
   m_Layer: 0
   m_Name: FirstProjectile
   m_TagString: Untagged
@@ -84,7 +84,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &5010736166011857109
+--- !u!114 &7461686842760293600
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -93,8 +93,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 4485657788483715155}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6ba759351d0d634498ab83085d173ae4, type: 3}
+  m_Script: {fileID: 11500000, guid: 3e7fa8a4e3707954eb79cdcae5a82a7d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  forwardSpeed: 0.01
-  gravity: 0.01

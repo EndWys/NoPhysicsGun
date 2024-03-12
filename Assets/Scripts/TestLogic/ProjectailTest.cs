@@ -48,12 +48,10 @@ public class ProjectailTest : MonoBehaviour
         if (stop) return;
 
         Vector3 manually = Vector3.down * gravity;
-        // Move the projectile forward
+        
         time += Time.deltaTime;
 
         Vector3 shoorDirection = _shootDirection * forwardSpeed * time;
-
-        // Apply gravity manually
         Vector3 GravityDirection = manually * time * time * 0.5f;
 
         projectileTransform.position = _originPos + shoorDirection + GravityDirection;
