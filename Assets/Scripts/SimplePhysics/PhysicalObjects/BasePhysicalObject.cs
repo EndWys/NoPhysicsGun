@@ -3,21 +3,20 @@ using UnityEngine;
 
 public abstract class BasePhysicalObject : CachedMonoBehaviour
 {
-    private bool IsMoving = false;
-    private bool IsFalling = false;
+    private bool _isMoving = false;
+    private bool _isFalling = false;
 
-    private float FallingTime = 0f;
+    private float _fallingTime = 0f;
     private Vector3 _moveVector;
-
 
     private void FixedUpdate()
     {
-        if (IsMoving)
+        if (_isMoving)
         {
             Move();
         }
 
-        if (IsFalling)
+        if (_isFalling)
         {
             Fall();
         }
@@ -37,11 +36,11 @@ public abstract class BasePhysicalObject : CachedMonoBehaviour
     {
         Vector3 gravityVector = Physics.gravity;
 
-        float lastFrameFallingTime = FallingTime;
+        float lastFrameFallingTime = _fallingTime;
 
-        FallingTime += Time.fixedDeltaTime;
+        _fallingTime += Time.fixedDeltaTime;
 
-        float accelerationDifference = (FallingTime * FallingTime) - (lastFrameFallingTime * lastFrameFallingTime);
+        float accelerationDifference = (_fallingTime * _fallingTime) - (lastFrameFallingTime * lastFrameFallingTime);
 
         Vector3 gravity = gravityVector * accelerationDifference * 0.5f;
 
@@ -75,23 +74,23 @@ public abstract class BasePhysicalObject : CachedMonoBehaviour
 
     public void StartFalling()
     {
-        IsFalling = true;
+        _isFalling = true;
     }
 
     public void StopFalling()
     {
-        IsFalling = false;
-        FallingTime = 0f;
+        _isFalling = false;
+        _fallingTime = 0f;
     }
 
     public void StartMoving(Vector3 moveVector)
     {
-        IsMoving = true;
+        _isMoving = true;
         _moveVector = moveVector;
     }
 
     public void StopMoving()
     {
-        IsMoving = false;
+        _isMoving = false;
     }
 }

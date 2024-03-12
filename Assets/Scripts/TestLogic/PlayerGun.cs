@@ -40,13 +40,13 @@ public class PlayerGun : CachedMonoBehaviour
 
         if (Input.GetKey(KeyCode.W))
         {
-            CachedTransform.Rotate(Vector3.left, Time.deltaTime * 30);
+            CachedTransform.Rotate(Vector3.left, Time.deltaTime * _rotationSpeed);
             _rotationIsDirty = true;
         }
 
         if (Input.GetKey(KeyCode.S))
         {
-            CachedTransform.Rotate(Vector3.right, Time.deltaTime * 30);
+            CachedTransform.Rotate(Vector3.right, Time.deltaTime * _rotationSpeed);
             _rotationIsDirty = true;
         }
     }
@@ -66,6 +66,6 @@ public class PlayerGun : CachedMonoBehaviour
     {
         GunProjectile projectile = _projectiles.Collect();
         projectile.Shoot(CachedTransform.forward, _gunPower);
-        projectile.OnHit += delegate (GunProjectile p) { _projectiles.Release(p); };
+        projectile.OnHit += (GunProjectile p) => { _projectiles.Release(p); };
     }
 }

@@ -42,8 +42,7 @@ public class CharacterControll : CachedMonoBehaviour
 
             float clampedY = Mathf.Clamp(rotation.y, _minRotation, _maxRotation);
 
-            CachedTransform.localRotation =
-             new Quaternion(rotation.x, clampedY, rotation.z, rotation.w);
+            CachedTransform.localRotation = new Quaternion(rotation.x, clampedY, rotation.z, rotation.w);
         }
     }
 }
