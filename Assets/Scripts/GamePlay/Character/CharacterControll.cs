@@ -1,24 +1,49 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
-public class CharacterControll : MonoBehaviour
+public class CharacterControll : CachedMonoBehaviour
 {
-    // Start is called before the first frame update
-    void Update()
-    {
+    [Header("Rotation Settings")]
+    [SerializeField] float _rotationSpeed = 30;
+    [SerializeField] float _minRotation;
+    [SerializeField] float _maxRotation;
 
+    private bool _rotationIsDirty = false;
+
+    private void Update()
+    {
+        CharacterInput();
+
+        TryToNormalizeCharacterRotation();
+    }
+
+    private void CharacterInput()
+    {
         if (Input.GetKey(KeyCode.D))
         {
-            transform.Rotate(Vector3.up, Time.deltaTime * 30);
+            CachedTransform.Rotate(Vector3.up, Time.deltaTime * _rotationSpeed);
+            _rotationIsDirty = true;
         }
 
         if (Input.GetKey(KeyCode.A))
         {
-            transform.Rotate(Vector3.down, Time.deltaTime * 30);
+            CachedTransform.Rotate(Vector3.down, Time.deltaTime * _rotationSpeed);
+            _rotationIsDirty = true;
         }
+    }
 
-        transform.localRotation =
-         new Quaternion(transform.localRotation.x, Mathf.Clamp(transform.localRotation.y, -0.7f, 0.3f), transform.localRotation.z, transform.localRotation.w);
+    private void TryToNormalizeCharacterRotation()
+    {
+        if (_rotationIsDirty)
+        {
+            Quaternion rotation = CachedTransform.localRotation;
+
+            float clampedY = Mathf.Clamp(rotation.y, _minRotation, _maxRotation);
+
+            CachedTransform.localRotation =
+             new Quaternion(rotation.x, clampedY, rotation.z, rotation.w);
+        }
     }
 }

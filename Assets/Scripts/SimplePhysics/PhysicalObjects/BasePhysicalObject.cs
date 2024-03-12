@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public abstract class BasePhysicalObject : MonoBehaviour
+public abstract class BasePhysicalObject : CachedMonoBehaviour
 {
     private bool IsMoving = false;
     private bool IsFalling = false;
@@ -29,7 +29,7 @@ public abstract class BasePhysicalObject : MonoBehaviour
 
     private void Move()
     {
-        transform.position += _moveVector * Time.fixedDeltaTime;
+        CachedTransform.position += _moveVector * Time.fixedDeltaTime;
     }
 
     private void Fall()
@@ -44,14 +44,14 @@ public abstract class BasePhysicalObject : MonoBehaviour
 
         Vector3 gravity = gravityVector * accelerationDifference * 0.5f;
 
-        transform.position += gravity;
+        CachedTransform.position += gravity;
     }
 
     private bool CheckForHit()
     {
-        Ray ray = new Ray(transform.position, -transform.up);
+        Ray ray = new Ray(CachedTransform.position, -CachedTransform.up);
         
-        if (Physics.Raycast(ray, out RaycastHit hit, transform.localScale.y / 1.8f))
+        if (Physics.Raycast(ray, out RaycastHit hit, CachedTransform.localScale.y))
         {
             return true;
         }

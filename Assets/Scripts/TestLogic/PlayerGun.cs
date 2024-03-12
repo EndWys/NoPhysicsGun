@@ -1,43 +1,63 @@
 using UnityEngine;
 
-public class PlayerGun : MonoBehaviour
+public class PlayerGun : CachedMonoBehaviour
 {
-    [SerializeField] Projectile projectail;
+    [Header("References")]
+    [SerializeField] Projectile _projectail;
+    
+    [Space]
     [SerializeField] float _gunPower;
-    private Transform gunTransfrom;
 
-    // Start is called before the first frame update
-    void Start()
+    [Header("Rotation Settings")]
+    [SerializeField] float _rotationSpeed = 30;
+    [SerializeField] float _minRotation;
+    [SerializeField] float _maxRotation;
+
+    private bool _rotationIsDirty = false;
+
+    private void Update()
     {
-        gunTransfrom = transform;
+        GunInput();
+
+        TryToNormalizeCharacterRotation();
     }
 
-    // Update is called once per frame
-    void Update()
+    private void GunInput()
     {
-        if(Input.GetKeyDown(KeyCode.Space)) 
+        if (Input.GetKeyDown(KeyCode.Space))
         {
             Shoot();
         }
 
         if (Input.GetKey(KeyCode.W))
         {
-            gunTransfrom.Rotate(Vector3.left,Time.deltaTime * 30);
+            CachedTransform.Rotate(Vector3.left, Time.deltaTime * 30);
+            _rotationIsDirty = true;
         }
 
         if (Input.GetKey(KeyCode.S))
         {
-            gunTransfrom.Rotate(Vector3.right, Time.deltaTime * 30);
+            CachedTransform.Rotate(Vector3.right, Time.deltaTime * 30);
+            _rotationIsDirty = true;
         }
-
-        gunTransfrom.localRotation =
-         new Quaternion(Mathf.Clamp(transform.localRotation.x, 0.1f, 0.4f), transform.localRotation.y, transform.localRotation.z, transform.localRotation.w);
     }
+    private void TryToNormalizeCharacterRotation()
+    {
+        if (_rotationIsDirty)
+        {
+            Quaternion rotation = CachedTransform.localRotation;
+
+            float clampedX = Mathf.Clamp(rotation.x, _minRotation, _maxRotation);
+
+            CachedTransform.localRotation = new Quaternion(clampedX, rotation.y, rotation.z, rotation.w);
+        }
+    }
+
 
     void Shoot()
     {
-        projectail.transform.position = transform.position;
+        _projectail.CachedTransform.position = CachedTransform.position;
 
-        projectail.Shoot(gunTransfrom.forward, _gunPower);
+        _projectail.Shoot(CachedTransform.forward, _gunPower);
     }
 }
