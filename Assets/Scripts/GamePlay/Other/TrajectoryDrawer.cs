@@ -3,6 +3,8 @@ using UnityEngine;
 [RequireComponent(typeof(LineRenderer))]
 public class TrajectoryDrawer : MonoBehaviour
 {
+    const int POINTS_DEFAULT_COUNT = 100;
+
     private LineRenderer lineRendererComponent;
 
     private void Awake()
@@ -12,7 +14,7 @@ public class TrajectoryDrawer : MonoBehaviour
 
     public void ShowTrajectory(Vector3 origin, Vector3 speed)
     {
-        Vector3[] points = new Vector3[100];
+        Vector3[] points = new Vector3[POINTS_DEFAULT_COUNT];
         lineRendererComponent.positionCount = points.Length;
 
         for (int i = 0; i < points.Length; i++)
