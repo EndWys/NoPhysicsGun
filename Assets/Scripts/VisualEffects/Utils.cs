@@ -8,9 +8,9 @@ public class Utils : MonoBehaviour
     {
         if(obj == null) yield break;
 
-        while(obj.position != target) 
+        while(obj.localPosition != target) 
         { 
-            obj.position = Vector3.MoveTowards(obj.position, target, Time.deltaTime);
+            obj.localPosition = Vector3.MoveTowards(obj.localPosition, target, Time.deltaTime);
             yield return null;
         }
     }
@@ -21,10 +21,10 @@ public class Utils : MonoBehaviour
 
         float time = 0;
 
-        while (obj.position != target)
+        while (obj.localPosition != target)
         {
             time += Time.deltaTime;
-            obj.position = Vector3.MoveTowards(obj.position, target, curve.Evaluate(time) * Time.deltaTime);
+            obj.localPosition = Vector3.MoveTowards(obj.localPosition, target, curve.Evaluate(time) * Time.deltaTime);
             yield return null;
         }
     }

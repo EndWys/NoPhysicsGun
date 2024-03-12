@@ -1,3 +1,5 @@
+using System;
+using System.Threading.Tasks;
 using UnityEngine;
 
 public class PlayerGun : CachedMonoBehaviour
@@ -23,6 +25,8 @@ public class PlayerGun : CachedMonoBehaviour
 
     private bool _rotationIsDirty = false;
 
+    private bool _animationInProcess = false;
+
     private void Awake()
     {
         _projectiles.CreateMoreIfNeeded = true;
@@ -40,6 +44,8 @@ public class PlayerGun : CachedMonoBehaviour
 
     private void GunInput()
     {
+        if (_animationInProcess) return;
+
         if (Input.GetKeyDown(KeyCode.Space))
         {
             Shoot();
@@ -69,14 +75,28 @@ public class PlayerGun : CachedMonoBehaviour
         }
     }
 
-    private void Shoot()
+    private async void Shoot()
     {
+        Debug.Log("Shoot");
+
+        _animationInProcess = true;
+
         GunProjectile projectile = _projectiles.Collect(_projectailParent,CachedTransform.position,false);
         projectile.Shoot(_gunFroward, _gunPower);
+
         projectile.OnHit += (GunProjectile p) => { _projectiles.Release(p); };
 
-        _cameraShake.OnShoot();
-        _gunImpact.OnShoot();
+        Task cameraShakeCallback = new Task(() => { });
+        Task gunShakeCallback = new Task(() => { });
+
+        _cameraShake.OnShoot(cameraShakeCallback);
+        _gunImpact.OnShoot(gunShakeCallback);
+   
+        await Task.WhenAll(new Task[] { cameraShakeCallback, gunShakeCallback });
+
+        Debug.Log("Animation Finished");
+
+        _animationInProcess = false;
     }
 
     private void ShowTrajectory()
