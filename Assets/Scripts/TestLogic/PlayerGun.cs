@@ -3,7 +3,8 @@ using UnityEngine;
 public class PlayerGun : CachedMonoBehaviour
 {
     [Header("References")]
-    [SerializeField] Projectile _projectail;
+    [SerializeField] GameObject _projectail;
+    [SerializeField] Transform _projectailParent;
     
     [Space]
     [SerializeField] float _gunPower;
@@ -13,7 +14,15 @@ public class PlayerGun : CachedMonoBehaviour
     [SerializeField] float _minRotation;
     [SerializeField] float _maxRotation;
 
+    private Pooling<GunProjectile> _projectiles = new Pooling<GunProjectile>();
+
     private bool _rotationIsDirty = false;
+
+    private void Awake()
+    {
+        _projectiles.CreateMoreIfNeeded = true;
+        _projectiles.Initialize(_projectail, _projectailParent);
+    }
 
     private void Update()
     {
@@ -53,11 +62,10 @@ public class PlayerGun : CachedMonoBehaviour
         }
     }
 
-
     void Shoot()
     {
-        _projectail.CachedTransform.position = CachedTransform.position;
-
-        _projectail.Shoot(CachedTransform.forward, _gunPower);
+        GunProjectile projectile = _projectiles.Collect();
+        projectile.Shoot(CachedTransform.forward, _gunPower);
+        projectile.OnHit += delegate (GunProjectile p) { _projectiles.Release(p); };
     }
 }

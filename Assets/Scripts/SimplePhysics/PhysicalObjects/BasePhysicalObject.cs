@@ -24,7 +24,7 @@ public abstract class BasePhysicalObject : CachedMonoBehaviour
 
         if (CheckForHit())
         {
-            OnHit();
+            Hit();
         }
     }
 
@@ -71,7 +71,7 @@ public abstract class BasePhysicalObject : CachedMonoBehaviour
         return false;
     }
 
-    protected abstract void OnHit();
+    protected abstract void Hit();
 
     public void StartFalling()
     {

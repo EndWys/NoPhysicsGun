@@ -1,19 +1,21 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
 
-public class Projectile : BasePhysicalObject
+public class PhysicalProjectile : BasePhysicalObject
 {
+    public event Action OnHit;
+
     public void Shoot(Vector3 direction, float power)
     {
         StartMoving(direction * power);
         StartFalling();
     }
 
-    protected override void OnHit()
+    protected override void Hit()
     {
         StopMoving();
         StopFalling();
+        OnHit?.Invoke();
     }
 
 }
