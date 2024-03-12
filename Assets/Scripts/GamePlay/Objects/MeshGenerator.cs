@@ -4,27 +4,28 @@ using UnityEngine;
 [RequireComponent(typeof(MeshRenderer))]
 public class MeshGenerator : MonoBehaviour
 {
-
-    float _randomVertex => Random.Range(0.7f, 1.3f);
+    private float _randomVertex => Random.Range(0.7f, 1.3f);
     private void Start()
     {
-        CreateCube();
+        BuildCube();
     }
 
-    private void CreateCube()
+    private void BuildCube()
     {
-        Vector3[] vertices = {
-            new Vector3 (0, 0, 0),
-            new Vector3 (_randomVertex, 0, 0),
-            new Vector3 (_randomVertex, _randomVertex, 0),
-            new Vector3 (0, _randomVertex, 0),
-            new Vector3 (0, _randomVertex, _randomVertex),
-            new Vector3 (_randomVertex, _randomVertex, _randomVertex),
-            new Vector3 (_randomVertex, 0, _randomVertex),
-            new Vector3 (0, 0, _randomVertex),
-        };
+        int[] triangles = GetCubeTriangles();
+        Vector3[] vertices = GetCubeRandomVertexes();
 
-        int[] triangles = {
+        Mesh mesh = GetComponent<MeshFilter>().mesh;
+        mesh.Clear();
+        mesh.vertices = vertices;
+        mesh.triangles = triangles;
+        mesh.Optimize();
+        mesh.RecalculateNormals();
+    }
+
+    private int[] GetCubeTriangles()
+    {
+        return new int[] {
             0, 2, 1, //face front
 			0, 3, 2,
             2, 3, 4, //face top
@@ -38,12 +39,19 @@ public class MeshGenerator : MonoBehaviour
             0, 6, 7, //face bottom
 			0, 1, 6
         };
+    }
 
-        Mesh mesh = GetComponent<MeshFilter>().mesh;
-        mesh.Clear();
-        mesh.vertices = vertices;
-        mesh.triangles = triangles;
-        mesh.Optimize();
-        mesh.RecalculateNormals();
+    private Vector3[] GetCubeRandomVertexes()
+    {
+        return new Vector3[] {
+            new Vector3(0, 0, 0),
+            new Vector3(_randomVertex, 0, 0),
+            new Vector3(_randomVertex, _randomVertex, 0),
+            new Vector3(0, _randomVertex, 0),
+            new Vector3(0, _randomVertex, _randomVertex),
+            new Vector3(_randomVertex, _randomVertex, _randomVertex),
+            new Vector3(_randomVertex, 0, _randomVertex),
+            new Vector3(0, 0, _randomVertex),
+        };
     }
 }
