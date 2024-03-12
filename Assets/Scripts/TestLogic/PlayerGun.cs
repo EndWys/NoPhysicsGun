@@ -1,8 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class GunTest : MonoBehaviour
+public class PlayerGun : MonoBehaviour
 {
     [SerializeField] Projectile projectail;
     [SerializeField] float _gunPower;
@@ -33,7 +31,7 @@ public class GunTest : MonoBehaviour
         }
 
         gunTransfrom.localRotation =
-         new Quaternion(Mathf.Clamp(transform.rotation.x, 0.1f, 0.4f), transform.rotation.y, transform.rotation.z, transform.rotation.w);
+         new Quaternion(Mathf.Clamp(transform.localRotation.x, 0.1f, 0.4f), transform.localRotation.y, transform.localRotation.z, transform.localRotation.w);
     }
 
     void Shoot()
