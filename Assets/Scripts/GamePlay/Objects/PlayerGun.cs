@@ -5,6 +5,7 @@ public class PlayerGun : CachedMonoBehaviour
     [Header("References")]
     [SerializeField] GameObject _projectail;
     [SerializeField] Transform _projectailParent;
+    [SerializeField] TrajectoryDrawer _trajectoryDrawer;
     
     [Space]
     [SerializeField] float _gunPower;
@@ -15,6 +16,8 @@ public class PlayerGun : CachedMonoBehaviour
     [SerializeField] float _maxRotation;
 
     private Pooling<GunProjectile> _projectiles = new Pooling<GunProjectile>();
+
+    private Vector3 _gunFroward => CachedTransform.forward;
 
     private bool _rotationIsDirty = false;
 
@@ -29,6 +32,8 @@ public class PlayerGun : CachedMonoBehaviour
         GunInput();
 
         TryToNormalizeCharacterRotation();
+
+        ShowTrajectory();
     }
 
     private void GunInput()
@@ -62,10 +67,15 @@ public class PlayerGun : CachedMonoBehaviour
         }
     }
 
-    void Shoot()
+    private void Shoot()
     {
-        GunProjectile projectile = _projectiles.Collect();
-        projectile.Shoot(CachedTransform.forward, _gunPower);
+        GunProjectile projectile = _projectiles.Collect(_projectailParent,CachedTransform.position,false);
+        projectile.Shoot(_gunFroward, _gunPower);
         projectile.OnHit += (GunProjectile p) => { _projectiles.Release(p); };
+    }
+
+    private void ShowTrajectory()
+    {
+        _trajectoryDrawer.ShowTrajectory(CachedTransform.position, _gunFroward * _gunPower);
     }
 }
