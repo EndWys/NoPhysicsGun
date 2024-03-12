@@ -1030,18 +1030,6 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 717405904345304244, guid: 3ccdd07d844225b46b18cc4bd688a76d, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 717405904345304244, guid: 3ccdd07d844225b46b18cc4bd688a76d, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 717405904345304244, guid: 3ccdd07d844225b46b18cc4bd688a76d, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 0.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 717405904345304244, guid: 3ccdd07d844225b46b18cc4bd688a76d, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.75
       objectReference: {fileID: 0}
@@ -1084,14 +1072,6 @@ PrefabInstance:
     - target: {fileID: 4485657788483715155, guid: 3ccdd07d844225b46b18cc4bd688a76d, type: 3}
       propertyPath: m_Name
       value: FirstProjectile
-      objectReference: {fileID: 0}
-    - target: {fileID: 5010736166011857109, guid: 3ccdd07d844225b46b18cc4bd688a76d, type: 3}
-      propertyPath: gravity
-      value: 9.8
-      objectReference: {fileID: 0}
-    - target: {fileID: 5010736166011857109, guid: 3ccdd07d844225b46b18cc4bd688a76d, type: 3}
-      propertyPath: forwardSpeed
-      value: 10
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public abstract class BasePhysicalObject : CachedMonoBehaviour
@@ -49,11 +50,22 @@ public abstract class BasePhysicalObject : CachedMonoBehaviour
 
     private bool CheckForHit()
     {
-        Ray ray = new Ray(CachedTransform.position, -CachedTransform.up);
+        List <Ray> hitRays = new() {
+            new Ray(CachedTransform.position, CachedTransform.up),
+            new Ray(CachedTransform.position, -CachedTransform.up),
+            new Ray(CachedTransform.position, CachedTransform.right),
+            new Ray(CachedTransform.position, -CachedTransform.right),
+            new Ray(CachedTransform.position, CachedTransform.forward),
+            new Ray(CachedTransform.position, -CachedTransform.forward),
+        };
+
         
-        if (Physics.Raycast(ray, out RaycastHit hit, CachedTransform.localScale.y))
+        foreach (var ray in hitRays)
         {
-            return true;
+            if (Physics.Raycast(ray, out RaycastHit hit, CachedTransform.localScale.x))
+            {
+                return true;
+            }
         }
 
         return false;
