@@ -13,8 +13,8 @@ public class PoolingManager : MonoBehaviour
 
     public static PoolingManager Instance { get; private set; }
 
-    public Pooling<GunProjectile> Projectiles = new Pooling<GunProjectile>();
-    public Pooling<HoleObject> Holes = new Pooling<HoleObject>();
+    private Pooling<GunProjectile> _projectiles = new Pooling<GunProjectile>();
+    private Pooling<HoleObject> _holes = new Pooling<HoleObject>();
 
     private void Awake()
     {
@@ -38,29 +38,29 @@ public class PoolingManager : MonoBehaviour
 
     private void InitializePools()
     {
-        Projectiles.CreateMoreIfNeeded = true;
-        Projectiles.Initialize(_projectail, _projectailParent);
+        _projectiles.CreateMoreIfNeeded = true;
+        _projectiles.Initialize(_projectail, _projectailParent);
 
-        Holes.CreateMoreIfNeeded = true;
-        Holes.Initialize(_hole, _projectailParent);
+        _holes.CreateMoreIfNeeded = true;
+        _holes.Initialize(_hole, _projectailParent);
     }
 
     public GunProjectile CollectProjectile(Vector3 startPoint)
     {
-        return Projectiles.Collect(_projectailParent, startPoint, false);
+        return _projectiles.Collect(_projectailParent, startPoint, false);
     }
 
     public void ReleaseProjectile(GunProjectile obj) {
-        Projectiles.Release(obj);
+        _projectiles.Release(obj);
     }
 
     public HoleObject CollectHole(Vector3 point, Vector3 normal)
     {
-        return Holes.Collect(_projectailParent, point, false, Quaternion.LookRotation(-normal));
+        return _holes.Collect(_projectailParent, point, false, Quaternion.LookRotation(-normal));
     }
 
     public void ReleaseHole(HoleObject obj)
     {
-        Holes.Release(obj);
+        _holes.Release(obj);
     }
 }
