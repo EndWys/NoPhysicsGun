@@ -8,8 +8,6 @@ public class GunPowerSlider : MonoBehaviour
     [SerializeField] Slider _slider;
     [SerializeField] Text _power;
 
-    public event Action<float> PowerChanged;
-
     private void Awake()
     {
         _slider.minValue = _gun.MinPower;
