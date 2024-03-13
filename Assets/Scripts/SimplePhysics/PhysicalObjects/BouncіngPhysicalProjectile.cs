@@ -29,8 +29,6 @@ public class BouncіngPhysicalProjectile : PhysicalProjectile
 
         _causedBounceCount = 0;
 
-        StopMoving();
-        StopFalling();
         base.Hit(hitInfo);
     }
 }

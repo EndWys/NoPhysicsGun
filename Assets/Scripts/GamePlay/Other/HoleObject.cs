@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class HoleObject : PoolingObject
 {
+    private const float DELAY_BEFORE_DISAPEAR = 3F;
     public override string ObjectName => "Hole";
 
     public override void OnCollect()
@@ -14,7 +15,7 @@ public class HoleObject : PoolingObject
 
     private IEnumerator HideAfterDelay()
     {
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(DELAY_BEFORE_DISAPEAR);
 
         PoolingManager.Instance.ReleaseHole(this);
     }
