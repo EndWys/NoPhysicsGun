@@ -58,13 +58,6 @@ public class PlayerGun : CachedMonoBehaviour
 
     private void GunInput()
     {
-        if (_animationInProcess) return;
-
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            Shoot();
-        }
-
         if (Input.GetKey(KeyCode.UpArrow))
         {
             ChnagePower(+Time.deltaTime);
@@ -76,16 +69,21 @@ public class PlayerGun : CachedMonoBehaviour
         }
 
 
+        if (_animationInProcess) return;
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            Shoot();
+        }
+
         if (Input.GetKey(KeyCode.W))
         {
-            CachedTransform.Rotate(Vector3.left, Time.deltaTime * _rotationSpeed);
-            _rotationIsDirty = true;
+            Rotate(Vector3.left);
         }
 
         if (Input.GetKey(KeyCode.S))
         {
-            CachedTransform.Rotate(Vector3.right, Time.deltaTime * _rotationSpeed);
-            _rotationIsDirty = true;
+            Rotate(Vector3.right);
         }
     }
 
@@ -94,6 +92,12 @@ public class PlayerGun : CachedMonoBehaviour
         _gunPower = Mathf.Clamp(_gunPower + value * _powerChnagingSpeed, _minPower, _maxPower);
         OnPowerChange?.Invoke(_gunPower);
     }
+
+    private void Rotate(Vector3 direction)
+    {
+        CachedTransform.Rotate(direction, Time.deltaTime * _rotationSpeed);
+        _rotationIsDirty = true;
+    } 
 
     private void TryToNormalizeCharacterRotation()
     {
