@@ -19,6 +19,8 @@ public class BouncіngPhysicalProjectile : PhysicalProjectile
 
     protected override void Hit(RaycastHit hitInfo)
     {
+        PoolingManager.Instance.CollectHole(hitInfo.point, hitInfo.normal);
+
         if (_causedBounceCount < _posibleBounceCount)
         {
             Bounce(hitInfo.normal);
@@ -26,6 +28,7 @@ public class BouncіngPhysicalProjectile : PhysicalProjectile
         }
 
         _causedBounceCount = 0;
+
         base.Hit(hitInfo);
     }
 }

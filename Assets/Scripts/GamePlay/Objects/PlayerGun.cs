@@ -1,15 +1,11 @@
 using System;
-using System.Threading.Tasks;
 using UnityEngine;
 
 public class PlayerGun : CachedMonoBehaviour
 {
     [Header("References")]
-    [SerializeField] GameObject _projectail;
-    [SerializeField] Transform _projectailParent;
+    [SerializeReference] SimpleAnimator _gunAnimator;
     [SerializeField] TrajectoryDrawer _trajectoryDrawer;
-    [SerializeField] ShakeAnimation _gunImpact;
-    [SerializeField] ShakeAnimation _cameraShake;
     
     [Space]
     [SerializeField] float _gunPower;
@@ -24,19 +20,14 @@ public class PlayerGun : CachedMonoBehaviour
 
     private Action OnShot;
 
-    private Pooling<GunProjectile> _projectiles = new Pooling<GunProjectile>();
-
     private Vector3 _gunFroward => CachedTransform.forward;
 
     private bool _rotationIsDirty = false;
 
-    private bool _animationInProcess = false;
+    private bool _animationInProcess => _gunAnimator.AnimationInProcess;
 
     private void Awake()
     {
-        _projectiles.CreateMoreIfNeeded = true;
-        _projectiles.Initialize(_projectail, _projectailParent);
-
         OnShot += CallShotAnimation;
     }
 
@@ -84,27 +75,14 @@ public class PlayerGun : CachedMonoBehaviour
 
     private void Shoot()
     {
-        GunProjectile projectile = _projectiles.Collect(_projectailParent,CachedTransform.position,false);
+        GunProjectile projectile = PoolingManager.Instance.CollectProjectile(CachedTransform.position);
         projectile.Shoot(_gunFroward, _gunPower);
-
-        projectile.OnHit += (GunProjectile p) => { _projectiles.Release(p); };
-
         OnShot.Invoke();
     }
 
-    private async void CallShotAnimation()
+    private void CallShotAnimation()
     {
-        _animationInProcess = true;
-
-        Task cameraShakeCallback = new Task(() => { });
-        Task gunShakeCallback = new Task(() => { });
-
-        _cameraShake.StartAnimation(cameraShakeCallback);
-        _gunImpact.StartAnimation(gunShakeCallback);
-
-        await Task.WhenAll(new Task[] { cameraShakeCallback, gunShakeCallback });
-
-        _animationInProcess = false;
+        _gunAnimator.CallAnimation();
     }
 
     private void ShowTrajectory()

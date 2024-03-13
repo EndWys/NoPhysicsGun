@@ -4,6 +4,8 @@ using UnityEngine;
 
 public abstract class BasePhysicalObject : CachedMonoBehaviour
 {
+    private const float RAY_SIZE_MULTIPLIER = 1.5f;
+
     private bool _isMoving = false;
     private bool _isFalling = false;
 
@@ -33,7 +35,8 @@ public abstract class BasePhysicalObject : CachedMonoBehaviour
 
     private void Move()
     {
-        CachedTransform.position += _moveVector * Time.fixedDeltaTime;
+        Vector3 move = _moveVector * Time.fixedDeltaTime;
+        CachedTransform.Translate(move);
     }
 
     private void Fall()
@@ -48,7 +51,7 @@ public abstract class BasePhysicalObject : CachedMonoBehaviour
 
         Vector3 gravity = gravityVector * accelerationDifference * 0.5f;
 
-        CachedTransform.position += gravity;
+        CachedTransform.Translate(gravity);
     }
 
     private void TryToHit()
@@ -65,7 +68,7 @@ public abstract class BasePhysicalObject : CachedMonoBehaviour
         
         foreach (var ray in hitRays)
         {
-            if (Physics.Raycast(ray, out RaycastHit hit, CachedTransform.localScale.x))
+            if (Physics.Raycast(ray, out RaycastHit hit, CachedTransform.localScale.x * RAY_SIZE_MULTIPLIER))
             {
                 Hit(hit);
                 return;
