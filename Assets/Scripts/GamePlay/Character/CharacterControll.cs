@@ -7,7 +7,10 @@ public class CharacterControll : CachedMonoBehaviour
 {
     [Header("Rotation Settings")]
     [SerializeField] float _rotationSpeed = 30;
+    [Space]
+    [Range(-1f, 1f)]
     [SerializeField] float _minRotation;
+    [Range(-1f, 1f)]
     [SerializeField] float _maxRotation;
 
     private bool _rotationIsDirty = false;

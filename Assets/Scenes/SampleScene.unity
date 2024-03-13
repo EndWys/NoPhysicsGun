@@ -739,6 +739,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1222655338}
   - component: {fileID: 1222655339}
+  - component: {fileID: 1222655340}
   m_Layer: 0
   m_Name: Gun
   m_TagString: Untagged
@@ -754,14 +755,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1222655337}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.5, y: -0, z: -0, w: -0.8660254}
+  m_LocalRotation: {x: 0.17364846, y: -0, z: -0, w: -0.9848077}
   m_LocalPosition: {x: 0.73, y: -0.84, z: 0.8800001}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2124624693}
   m_Father: {fileID: 1622804698}
-  m_LocalEulerAnglesHint: {x: 300, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 340, y: 0, z: 0}
 --- !u!114 &1222655339
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -777,10 +778,51 @@ MonoBehaviour:
   _projectail: {fileID: 4485657788483715155, guid: 3ccdd07d844225b46b18cc4bd688a76d, type: 3}
   _projectailParent: {fileID: 1464933992}
   _trajectoryDrawer: {fileID: 925124786}
+  _gunImpact: {fileID: 1222655340}
+  _cameraShake: {fileID: 2026565896}
   _gunPower: 12
   _rotationSpeed: 30
   _minRotation: 0.1
   _maxRotation: 0.5
+--- !u!114 &1222655340
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1222655337}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 91190a15600456a44a768535aad1abc9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _distance: 0.15
+  _direction: {x: 0, y: 0, z: 1}
+  _target: {fileID: 242278930}
+  _cameraShakeCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0.09056603
+      outSlope: 0.09056603
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.51866484
+    - serializedVersion: 3
+      time: 1.0000143
+      value: 0.0070747524
+      inSlope: -2.5682778
+      outSlope: -2.5682778
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.05395534
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &1334004854
 GameObject:
   m_ObjectHideFlags: 0
@@ -1026,6 +1068,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2026565893}
   - component: {fileID: 2026565894}
+  - component: {fileID: 2026565896}
   m_Layer: 0
   m_Name: Character
   m_TagString: Untagged
@@ -1066,6 +1109,45 @@ MonoBehaviour:
   _rotationSpeed: 30
   _minRotation: -0.35
   _maxRotation: 0.35
+--- !u!114 &2026565896
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2026565892}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 91190a15600456a44a768535aad1abc9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _distance: 0.1
+  _direction: {x: -1, y: 1, z: 0}
+  _target: {fileID: 963194228}
+  _cameraShakeCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1.9761047
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1.0110778
+      value: 0.9937235
+      inSlope: -9.5549135
+      outSlope: -9.5549135
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.031999335
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &2031782814
 GameObject:
   m_ObjectHideFlags: 0

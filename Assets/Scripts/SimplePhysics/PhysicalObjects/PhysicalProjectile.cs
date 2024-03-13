@@ -3,8 +3,6 @@ using UnityEngine;
 
 public class PhysicalProjectile : BasePhysicalObject
 {
-    public event Action OnHit;
-
     public void Shoot(Vector3 direction, float power)
     {
         StartMoving(direction * power);
@@ -15,7 +13,6 @@ public class PhysicalProjectile : BasePhysicalObject
     {
         StopMoving();
         StopFalling();
-        OnHit?.Invoke();
     }
 
 }

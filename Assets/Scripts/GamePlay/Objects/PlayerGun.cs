@@ -1,3 +1,5 @@
+using System;
+using System.Threading.Tasks;
 using UnityEngine;
 
 public class PlayerGun : CachedMonoBehaviour
@@ -6,14 +8,21 @@ public class PlayerGun : CachedMonoBehaviour
     [SerializeField] GameObject _projectail;
     [SerializeField] Transform _projectailParent;
     [SerializeField] TrajectoryDrawer _trajectoryDrawer;
+    [SerializeField] ShakeAnimation _gunImpact;
+    [SerializeField] ShakeAnimation _cameraShake;
     
     [Space]
     [SerializeField] float _gunPower;
 
     [Header("Rotation Settings")]
     [SerializeField] float _rotationSpeed = 30;
+    [Space]
+    [Range(-1f,1f)]
     [SerializeField] float _minRotation;
+    [Range(-1f, 1f)]
     [SerializeField] float _maxRotation;
+
+    private Action OnShot;
 
     private Pooling<GunProjectile> _projectiles = new Pooling<GunProjectile>();
 
@@ -21,10 +30,14 @@ public class PlayerGun : CachedMonoBehaviour
 
     private bool _rotationIsDirty = false;
 
+    private bool _animationInProcess = false;
+
     private void Awake()
     {
         _projectiles.CreateMoreIfNeeded = true;
         _projectiles.Initialize(_projectail, _projectailParent);
+
+        OnShot += CallShotAnimation;
     }
 
     private void Update()
@@ -38,6 +51,8 @@ public class PlayerGun : CachedMonoBehaviour
 
     private void GunInput()
     {
+        if (_animationInProcess) return;
+
         if (Input.GetKeyDown(KeyCode.Space))
         {
             Shoot();
@@ -71,7 +86,25 @@ public class PlayerGun : CachedMonoBehaviour
     {
         GunProjectile projectile = _projectiles.Collect(_projectailParent,CachedTransform.position,false);
         projectile.Shoot(_gunFroward, _gunPower);
-        projectile.OnHit += (GunProjectile p) => { _projectiles.Release(p); };
+
+        projectile.AfterHit += (GunProjectile p) => { _projectiles.Release(p); };
+
+        OnShot.Invoke();
+    }
+
+    private async void CallShotAnimation()
+    {
+        _animationInProcess = true;
+
+        Task cameraShakeCallback = new Task(() => { });
+        Task gunShakeCallback = new Task(() => { });
+
+        _cameraShake.StartAnimation(cameraShakeCallback);
+        _gunImpact.StartAnimation(gunShakeCallback);
+
+        await Task.WhenAll(new Task[] { cameraShakeCallback, gunShakeCallback });
+
+        _animationInProcess = false;
     }
 
     private void ShowTrajectory()
