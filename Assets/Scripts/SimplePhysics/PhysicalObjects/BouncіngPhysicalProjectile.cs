@@ -2,14 +2,19 @@ using UnityEngine;
 
 public class BouncіngPhysicalProjectile : PhysicalProjectile
 {
-    private int _posibleBounceCount = 1;
+    [Range(1,30)]
+    [SerializeField] int _bouncePower = 15;
+    [Range(1,10)]
+    [SerializeField] int _bounceCount = 1;
+
     private int _causedBounceCount = 0;
+    private int _posibleBounceCount => _bounceCount;
 
     private void Bounce(Vector3 direction)
     {
         _causedBounceCount++;
 
-        StartMoving(direction * 15);
+        StartMoving(direction * _bouncePower);
     }
 
     protected override void Hit(RaycastHit hitInfo)

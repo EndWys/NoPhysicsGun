@@ -1,9 +1,9 @@
 using System;
 using UnityEngine;
 
-public class PhysicalProjectile : BasePhysicalObject
+public class PhysicalProjectile : BasePhysicalObject, IProjectile
 {
-    public event Action AfterHit;
+    public event Action OnHit;
 
     public void Shoot(Vector3 direction, float power)
     {
@@ -15,7 +15,7 @@ public class PhysicalProjectile : BasePhysicalObject
     {
         StopMoving();
         StopFalling();
-        AfterHit.Invoke();
+        OnHit.Invoke();
     }
 
 }

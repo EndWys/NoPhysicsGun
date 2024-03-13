@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 4058863606079644131}
   - component: {fileID: 6923583112187067569}
   - component: {fileID: 4826485068435472825}
-  - component: {fileID: 4073639917722226180}
+  - component: {fileID: 507737233879673898}
   m_Layer: 0
   m_Name: FirstProjectile
   m_TagString: Untagged
@@ -110,7 +110,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9562c6779ec9ac449a0324c48049d03b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &4073639917722226180
+--- !u!114 &507737233879673898
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -122,3 +122,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 023f87d404346514e8cb7a8951b35998, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _bouncePower: 10
+  _bounceCount: 1
