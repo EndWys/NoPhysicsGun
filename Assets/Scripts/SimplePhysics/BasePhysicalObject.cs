@@ -92,7 +92,8 @@ public abstract class BasePhysicalObject : CachedMonoBehaviour
     public void StartMoving(Vector3 moveVector)
     {
         _isMoving = true;
-        _moveVector += moveVector;
+
+        _moveVector = moveVector;
     }
 
     public void StopMoving()
