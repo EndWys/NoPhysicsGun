@@ -87,7 +87,7 @@ public class PlayerGun : CachedMonoBehaviour
         GunProjectile projectile = _projectiles.Collect(_projectailParent,CachedTransform.position,false);
         projectile.Shoot(_gunFroward, _gunPower);
 
-        projectile.AfterHit += (GunProjectile p) => { _projectiles.Release(p); };
+        projectile.OnHit += (GunProjectile p) => { _projectiles.Release(p); };
 
         OnShot.Invoke();
     }

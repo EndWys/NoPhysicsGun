@@ -4,9 +4,10 @@ using UnityEngine;
 
 public class ShakeAnimation : MonoBehaviour
 {
+    [SerializeField] Transform _target;
+    [Space]
     [SerializeField] float _distance;
     [SerializeField] Vector3 _direction;
-    [SerializeField] Transform _target;
 
     [field: SerializeField] AnimationCurve _cameraShakeCurve;
 
