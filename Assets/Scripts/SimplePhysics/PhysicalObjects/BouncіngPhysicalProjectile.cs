@@ -14,7 +14,9 @@ public class BouncіngPhysicalProjectile : PhysicalProjectile
     {
         _causedBounceCount++;
 
+        StopFalling();
         StartMoving(direction * _bouncePower);
+        StartFalling();
     }
 
     protected override void Hit(RaycastHit hitInfo)
