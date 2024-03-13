@@ -43,7 +43,7 @@ public class Pooling<T> : List<T> where T : CachedMonoBehaviour, IPooling
         return this;
     }
 
-    public T Collect(Transform parent = null, Vector3? position = null, bool localPosition = true)
+    public T Collect(Transform parent = null, Vector3? position = null, bool localPosition = true, Quaternion? rotation = null, bool localRotation = true)
     {
         var obj = Find(x => x.IsUsing == false);
         if (obj == null && CreateMoreIfNeeded)
@@ -55,10 +55,17 @@ public class Pooling<T> : List<T> where T : CachedMonoBehaviour, IPooling
         if (obj == null) return obj;
 
         obj.CachedTransform.SetParent(parent ?? _parent);
+
         if (localPosition)
             obj.CachedTransform.localPosition = position ?? _startPos;
         else
             obj.CachedTransform.position = position ?? _startPos;
+
+        if (localRotation)
+            obj.CachedTransform.localRotation = rotation ?? Quaternion.identity;
+        else
+            obj.CachedTransform.rotation = rotation ?? Quaternion.identity;
+
         obj.OnCollect();
 
         return obj;

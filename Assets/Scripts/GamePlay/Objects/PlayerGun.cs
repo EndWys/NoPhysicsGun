@@ -6,6 +6,7 @@ public class PlayerGun : CachedMonoBehaviour
 {
     [Header("References")]
     [SerializeField] GameObject _projectail;
+    [SerializeField] GameObject _hole;
     [SerializeField] Transform _projectailParent;
     [SerializeField] TrajectoryDrawer _trajectoryDrawer;
     [SerializeField] ShakeAnimation _gunImpact;
@@ -25,6 +26,7 @@ public class PlayerGun : CachedMonoBehaviour
     private Action OnShot;
 
     private Pooling<GunProjectile> _projectiles = new Pooling<GunProjectile>();
+    private Pooling<HoleObject> _holes = new Pooling<HoleObject>();
 
     private Vector3 _gunFroward => CachedTransform.forward;
 
@@ -36,6 +38,9 @@ public class PlayerGun : CachedMonoBehaviour
     {
         _projectiles.CreateMoreIfNeeded = true;
         _projectiles.Initialize(_projectail, _projectailParent);
+
+        _holes.CreateMoreIfNeeded = true;
+        _holes.Initialize(_hole, _projectailParent);
 
         OnShot += CallShotAnimation;
     }
@@ -87,7 +92,10 @@ public class PlayerGun : CachedMonoBehaviour
         GunProjectile projectile = _projectiles.Collect(_projectailParent,CachedTransform.position,false);
         projectile.Shoot(_gunFroward, _gunPower);
 
-        projectile.OnHit += (GunProjectile p) => { _projectiles.Release(p); };
+        projectile.OnHit += (GunProjectile p, Vector3 point) => { 
+            _projectiles.Release(p);
+            _holes.Collect(_projectailParent, p.CachedTransform.position, false, Quaternion.LookRotation(-point)); 
+        };
 
         OnShot.Invoke();
     }

@@ -33,7 +33,9 @@ public abstract class BasePhysicalObject : CachedMonoBehaviour
 
     private void Move()
     {
-        CachedTransform.position += _moveVector * Time.fixedDeltaTime;
+        Vector3 move = _moveVector * Time.fixedDeltaTime;
+        CachedTransform.Translate(move);
+        //CachedTransform.position += move;
     }
 
     private void Fall()
@@ -48,7 +50,8 @@ public abstract class BasePhysicalObject : CachedMonoBehaviour
 
         Vector3 gravity = gravityVector * accelerationDifference * 0.5f;
 
-        CachedTransform.position += gravity;
+        CachedTransform.Translate(gravity);
+        //CachedTransform.position += gravity;
     }
 
     private void TryToHit()
