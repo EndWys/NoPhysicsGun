@@ -1,5 +1,4 @@
 using System;
-using System.Threading.Tasks;
 using UnityEngine;
 
 public class PlayerGun : CachedMonoBehaviour
@@ -8,9 +7,10 @@ public class PlayerGun : CachedMonoBehaviour
     [SerializeField] GameObject _projectail;
     [SerializeField] GameObject _hole;
     [SerializeField] Transform _projectailParent;
+
+    [Space]
+    [SerializeReference] SimpleAnimator _gunAnimator;
     [SerializeField] TrajectoryDrawer _trajectoryDrawer;
-    [SerializeField] ShakeAnimation _gunImpact;
-    [SerializeField] ShakeAnimation _cameraShake;
     
     [Space]
     [SerializeField] float _gunPower;
@@ -32,7 +32,7 @@ public class PlayerGun : CachedMonoBehaviour
 
     private bool _rotationIsDirty = false;
 
-    private bool _animationInProcess = false;
+    private bool _animationInProcess => _gunAnimator.AnimationInProcess;
 
     private void Awake()
     {
@@ -92,27 +92,25 @@ public class PlayerGun : CachedMonoBehaviour
         GunProjectile projectile = _projectiles.Collect(_projectailParent,CachedTransform.position,false);
         projectile.Shoot(_gunFroward, _gunPower);
 
-        projectile.OnHit += (GunProjectile p, Vector3 point) => { 
-            _projectiles.Release(p);
-            _holes.Collect(_projectailParent, p.CachedTransform.position, false, Quaternion.LookRotation(-point)); 
-        };
+        projectile.OnHit += OnBulletHit;
 
         OnShot.Invoke();
     }
 
-    private async void CallShotAnimation()
+    private void OnBulletHit(GunProjectile p, RaycastHit hit)
     {
-        _animationInProcess = true;
+        _projectiles.Release(p);
+        SpawnHole(hit);
+    }
 
-        Task cameraShakeCallback = new Task(() => { });
-        Task gunShakeCallback = new Task(() => { });
+    private void SpawnHole(RaycastHit hit)
+    {
+        _holes.Collect(_projectailParent, hit.point, false, Quaternion.LookRotation(-hit.normal));
+    }
 
-        _cameraShake.StartAnimation(cameraShakeCallback);
-        _gunImpact.StartAnimation(gunShakeCallback);
-
-        await Task.WhenAll(new Task[] { cameraShakeCallback, gunShakeCallback });
-
-        _animationInProcess = false;
+    private void CallShotAnimation()
+    {
+        _gunAnimator.CallAnimation();
     }
 
     private void ShowTrajectory()
