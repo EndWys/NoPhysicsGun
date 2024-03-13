@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class CharacterControll : CachedMonoBehaviour
 {
+    [SerializeField] PlayerInputConnenctor _inputConnector;
+
     [Header("Rotation Settings")]
     [SerializeField] float _rotationSpeed = 30;
     [Space]
@@ -15,26 +17,28 @@ public class CharacterControll : CachedMonoBehaviour
 
     private bool _rotationIsDirty = false;
 
+    private void Awake()
+    {
+        ConnectInput();
+    }
+
     private void Update()
     {
-        CharacterInput();
-
         TryToNormalizeCharacterRotation();
     }
 
-    private void CharacterInput()
+    private void ConnectInput()
     {
-        if (Input.GetKey(KeyCode.D))
-        {
-            CachedTransform.Rotate(Vector3.up, Time.deltaTime * _rotationSpeed);
-            _rotationIsDirty = true;
-        }
+        _inputConnector.ConnectSignal();
 
-        if (Input.GetKey(KeyCode.A))
-        {
-            CachedTransform.Rotate(Vector3.down, Time.deltaTime * _rotationSpeed);
-            _rotationIsDirty = true;
-        }
+        _inputConnector.ConnectAction(InputT.RotateLeft, () => Rotate(Vector3.down));
+        _inputConnector.ConnectAction(InputT.RotateRight, () => Rotate(Vector3.up));
+    }
+
+    private void Rotate(Vector3 direction)
+    {
+        CachedTransform.Rotate(direction, Time.deltaTime * _rotationSpeed);
+        _rotationIsDirty = true;
     }
 
     private void TryToNormalizeCharacterRotation()

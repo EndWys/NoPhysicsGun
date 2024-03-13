@@ -4,6 +4,7 @@ using UnityEngine;
 public class PlayerGun : CachedMonoBehaviour
 {
     [Header("References")]
+    [SerializeField] PlayerInputConnenctor _inputConnector;
     [SerializeReference] SimpleAnimator _gunAnimator;
     [SerializeField] TrajectoryDrawer _trajectoryDrawer;
 
@@ -44,47 +45,26 @@ public class PlayerGun : CachedMonoBehaviour
 
     private void Awake()
     {
+        ConnectInput();
+
         OnShot += CallShotAnimation;
     }
 
     private void Update()
     {
-        GunInput();
-
         TryToNormalizeCharacterRotation();
 
         ShowTrajectory();
     }
 
-    private void GunInput()
-    {
-        if (Input.GetKey(KeyCode.UpArrow))
-        {
-            ChnagePower(+Time.deltaTime);
-        }
+    private void ConnectInput() {
+        _inputConnector.ConnectSignal();
 
-        if (Input.GetKey(KeyCode.DownArrow))
-        {
-            ChnagePower(-Time.deltaTime);
-        }
-
-
-        if (_animationInProcess) return;
-
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            Shoot();
-        }
-
-        if (Input.GetKey(KeyCode.W))
-        {
-            Rotate(Vector3.left);
-        }
-
-        if (Input.GetKey(KeyCode.S))
-        {
-            Rotate(Vector3.right);
-        }
+        _inputConnector.ConnectAction(InputT.Shoot, Shoot);
+        _inputConnector.ConnectAction(InputT.PowerUp, () => ChnagePower(+Time.deltaTime));
+        _inputConnector.ConnectAction(InputT.PowerDown, () => ChnagePower(-Time.deltaTime));
+        _inputConnector.ConnectAction(InputT.MoveUp, () => Rotate(Vector3.left));
+        _inputConnector.ConnectAction(InputT.MoveDown, () => Rotate(Vector3.right));
     }
 
     private void ChnagePower(float value)
@@ -95,6 +75,8 @@ public class PlayerGun : CachedMonoBehaviour
 
     private void Rotate(Vector3 direction)
     {
+        if (_animationInProcess) return;
+
         CachedTransform.Rotate(direction, Time.deltaTime * _rotationSpeed);
         _rotationIsDirty = true;
     } 
@@ -113,6 +95,8 @@ public class PlayerGun : CachedMonoBehaviour
 
     private void Shoot()
     {
+        if (_animationInProcess) return;
+
         GunProjectile projectile = PoolingManager.Instance.CollectProjectile(CachedTransform.position);
         projectile.Shoot(_gunFroward, _gunPower);
         OnShot.Invoke();
