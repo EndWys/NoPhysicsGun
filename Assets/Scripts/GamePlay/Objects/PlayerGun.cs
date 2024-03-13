@@ -6,23 +6,39 @@ public class PlayerGun : CachedMonoBehaviour
     [Header("References")]
     [SerializeReference] SimpleAnimator _gunAnimator;
     [SerializeField] TrajectoryDrawer _trajectoryDrawer;
-    
+
+    [Header("Power Settings")]
+
+    [Range(1, 10)]
+    [SerializeField] private float _powerChnagingSpeed;
+
     [Space]
-    [SerializeField] float _gunPower;
+    [Range(1f, 9f)]
+    [SerializeField] private float _minPower;
+    [Range(10f, 30f)]
+    [SerializeField] private float _maxPower;
 
     [Header("Rotation Settings")]
     [SerializeField] float _rotationSpeed = 30;
+
     [Space]
     [Range(-1f,1f)]
     [SerializeField] float _minRotation;
     [Range(-1f, 1f)]
     [SerializeField] float _maxRotation;
 
-    private Action OnShot;
+    public event Action<float> OnPowerChange;
+
+    private event Action OnShot;
 
     private Vector3 _gunFroward => CachedTransform.forward;
 
+    private float _gunPower = 8;
+
     private bool _rotationIsDirty = false;
+
+    public float MinPower => _minPower;
+    public float MaxPower => _maxPower;
 
     private bool _animationInProcess => _gunAnimator.AnimationInProcess;
 
@@ -49,6 +65,17 @@ public class PlayerGun : CachedMonoBehaviour
             Shoot();
         }
 
+        if (Input.GetKey(KeyCode.UpArrow))
+        {
+            ChnagePower(+Time.deltaTime);
+        }
+
+        if (Input.GetKey(KeyCode.DownArrow))
+        {
+            ChnagePower(-Time.deltaTime);
+        }
+
+
         if (Input.GetKey(KeyCode.W))
         {
             CachedTransform.Rotate(Vector3.left, Time.deltaTime * _rotationSpeed);
@@ -61,6 +88,13 @@ public class PlayerGun : CachedMonoBehaviour
             _rotationIsDirty = true;
         }
     }
+
+    private void ChnagePower(float value)
+    {
+        _gunPower = Mathf.Clamp(_gunPower + value * _powerChnagingSpeed, _minPower, _maxPower);
+        OnPowerChange?.Invoke(_gunPower);
+    }
+
     private void TryToNormalizeCharacterRotation()
     {
         if (_rotationIsDirty)
