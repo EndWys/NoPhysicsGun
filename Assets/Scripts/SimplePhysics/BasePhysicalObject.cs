@@ -12,6 +12,8 @@ public abstract class BasePhysicalObject : CachedMonoBehaviour
     private float _fallingTime = 0f;
     private Vector3 _moveVector;
 
+    private bool _isStatic => !_isMoving && !_isFalling;
+
     private void FixedUpdate()
     {
         if (_isMoving)
@@ -24,10 +26,10 @@ public abstract class BasePhysicalObject : CachedMonoBehaviour
             Fall();
         }
 
-        if (CheckForHit())
+        if (!_isStatic)
         {
-            Hit();
-            AfterHit?.Invoke();
+
+            TryToHit();
         }
     }
 
@@ -51,7 +53,7 @@ public abstract class BasePhysicalObject : CachedMonoBehaviour
         CachedTransform.position += gravity;
     }
 
-    private bool CheckForHit()
+    private void TryToHit()
     {
         List <Ray> hitRays = new() {
             new Ray(CachedTransform.position, CachedTransform.up),
@@ -67,14 +69,13 @@ public abstract class BasePhysicalObject : CachedMonoBehaviour
         {
             if (Physics.Raycast(ray, out RaycastHit hit, CachedTransform.localScale.x))
             {
-                return true;
+                Hit(hit);
+                return;
             }
         }
-
-        return false;
     }
 
-    protected abstract void Hit();
+    protected abstract void Hit(RaycastHit hitInfo);
 
     public void StartFalling()
     {
@@ -90,11 +91,12 @@ public abstract class BasePhysicalObject : CachedMonoBehaviour
     public void StartMoving(Vector3 moveVector)
     {
         _isMoving = true;
-        _moveVector = moveVector;
+        _moveVector += moveVector;
     }
 
     public void StopMoving()
     {
         _isMoving = false;
+        _moveVector = Vector3.zero;
     }
 }

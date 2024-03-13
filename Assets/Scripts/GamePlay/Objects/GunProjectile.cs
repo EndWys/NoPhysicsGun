@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-[RequireComponent(typeof(PhysicalProjectile))]
+[RequireComponent(typeof(Bounc³ngPhysicalProjectile))]
 public class GunProjectile : PoolingObject
 {
     public event Action<GunProjectile> AfterHit;
