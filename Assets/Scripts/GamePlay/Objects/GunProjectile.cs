@@ -4,7 +4,6 @@ using UnityEngine;
 [RequireComponent(typeof(Bounc³ngPhysicalProjectile))]
 public class GunProjectile : PoolingObject
 {
-    public event Action<GunProjectile, RaycastHit> OnHit;
 
     public override string ObjectName => "GunProjectile";
 
@@ -18,12 +17,11 @@ public class GunProjectile : PoolingObject
     public void Shoot(Vector3 direction, float power)
     {
         _physicalProjectile.Shoot(direction, power);
-        _physicalProjectile.OnHit += (RaycastHit hitInfo) => OnHit?.Invoke(this, hitInfo);
+        _physicalProjectile.OnHit += OnHit;
     }
 
-    public override void OnRelease()
+    private void OnHit()
     {
-        base.OnRelease();
-        OnHit = null;
+        PoolingManager.Instance.ReleaseProjectile(this);
     }
 }

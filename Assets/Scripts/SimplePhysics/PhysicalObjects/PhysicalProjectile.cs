@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class PhysicalProjectile : BasePhysicalObject, IProjectile
 {
-    public event Action<RaycastHit> OnHit;
+    public event Action OnHit;
 
     public void Shoot(Vector3 direction, float power)
     {
@@ -15,7 +15,7 @@ public class PhysicalProjectile : BasePhysicalObject, IProjectile
     {
         StopMoving();
         StopFalling();
-        OnHit.Invoke(hitInfo);
+        OnHit.Invoke();
     }
 
 }

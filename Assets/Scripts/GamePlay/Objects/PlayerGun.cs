@@ -4,11 +4,6 @@ using UnityEngine;
 public class PlayerGun : CachedMonoBehaviour
 {
     [Header("References")]
-    [SerializeField] GameObject _projectail;
-    [SerializeField] GameObject _hole;
-    [SerializeField] Transform _projectailParent;
-
-    [Space]
     [SerializeReference] SimpleAnimator _gunAnimator;
     [SerializeField] TrajectoryDrawer _trajectoryDrawer;
     
@@ -25,9 +20,6 @@ public class PlayerGun : CachedMonoBehaviour
 
     private Action OnShot;
 
-    private Pooling<GunProjectile> _projectiles = new Pooling<GunProjectile>();
-    private Pooling<HoleObject> _holes = new Pooling<HoleObject>();
-
     private Vector3 _gunFroward => CachedTransform.forward;
 
     private bool _rotationIsDirty = false;
@@ -36,12 +28,6 @@ public class PlayerGun : CachedMonoBehaviour
 
     private void Awake()
     {
-        _projectiles.CreateMoreIfNeeded = true;
-        _projectiles.Initialize(_projectail, _projectailParent);
-
-        _holes.CreateMoreIfNeeded = true;
-        _holes.Initialize(_hole, _projectailParent);
-
         OnShot += CallShotAnimation;
     }
 
@@ -89,23 +75,9 @@ public class PlayerGun : CachedMonoBehaviour
 
     private void Shoot()
     {
-        GunProjectile projectile = _projectiles.Collect(_projectailParent,CachedTransform.position,false);
+        GunProjectile projectile = PoolingManager.Instance.CollectProjectile(CachedTransform.position);
         projectile.Shoot(_gunFroward, _gunPower);
-
-        projectile.OnHit += OnBulletHit;
-
         OnShot.Invoke();
-    }
-
-    private void OnBulletHit(GunProjectile p, RaycastHit hit)
-    {
-        _projectiles.Release(p);
-        SpawnHole(hit);
-    }
-
-    private void SpawnHole(RaycastHit hit)
-    {
-        _holes.Collect(_projectailParent, hit.point, false, Quaternion.LookRotation(-hit.normal));
     }
 
     private void CallShotAnimation()

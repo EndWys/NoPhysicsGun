@@ -581,6 +581,53 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 242278929}
   m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &296712995
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 296712997}
+  - component: {fileID: 296712996}
+  m_Layer: 0
+  m_Name: PoolManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &296712996
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 296712995}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62e083d750364ec47af263d227d2e8c1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _projectail: {fileID: 4485657788483715155, guid: 3ccdd07d844225b46b18cc4bd688a76d, type: 3}
+  _hole: {fileID: 2542032251515491509, guid: 4c6e366e85bea5149bb5ea91c3f46278, type: 3}
+  _projectailParent: {fileID: 1464933992}
+--- !u!4 &296712997
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 296712995}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.66198474, y: 1.0529412, z: -10.080177}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &323920268
 GameObject:
   m_ObjectHideFlags: 0
@@ -2434,9 +2481,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1460b72ea97dbe46841e42d2ad2660d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _projectail: {fileID: 4485657788483715155, guid: 3ccdd07d844225b46b18cc4bd688a76d, type: 3}
-  _hole: {fileID: 2542032251515491509, guid: 4c6e366e85bea5149bb5ea91c3f46278, type: 3}
-  _projectailParent: {fileID: 1464933992}
   _gunAnimator: {fileID: 1222655341}
   _trajectoryDrawer: {fileID: 925124786}
   _gunPower: 12
@@ -4409,3 +4453,4 @@ SceneRoots:
   - {fileID: 1421561187}
   - {fileID: 1464933992}
   - {fileID: 1120789138}
+  - {fileID: 296712997}
